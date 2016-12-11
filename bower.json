@@ -1,0 +1,22 @@
+{
+  "name": "politicorrupto",
+  "authors": [
+    "Rafael <rafa_soyyo@hotmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lumx": "^1.3.2",
+    "firebase": "^3.6.3",
+    "angularfire": "^2.1.0"
+  }
+}
