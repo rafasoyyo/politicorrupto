@@ -67,6 +67,7 @@ gulp.task('coffee', function() {
         .pipe(ngAnnotate())
         .pipe(concat('angular_scripts.js'))
         .pipe(gulp.dest( public + 'js/'))
+        .pipe(livereload())
         .pipe(notify({
             onLast: true,
             message: 'angular_coffee done!'
@@ -107,6 +108,7 @@ gulp.task('jade', function() {
         }))
         .pipe(cache({ type: 'timestamp' }))
         .pipe(gulp.dest( public ))
+        .pipe(livereload())
         .pipe(notify({
             onLast: true,
             message: 'Jade compiled'
@@ -138,8 +140,10 @@ gulp.task('server', function() {
  * @method watch
  */
 gulp.task('watch', function() {
+    livereload.listen();
+
     gulp.watch( source + 'coffee/**/*.coffee',  ['coffee'] );
-    gulp.watch( source + 'template/**/*.jade',  ['jade'] );
+    gulp.watch( source + 'templates/**/*.jade',  ['jade'] );
     gulp.watch( source + 'index.jade',          ['jade'] );
 });
 
@@ -148,4 +152,4 @@ gulp.task('watch', function() {
  * @memberOf GULP
  * @method Default
  */
-gulp.task('default', ['watch', 'server'] );
+gulp.task('default', ['watch'] );

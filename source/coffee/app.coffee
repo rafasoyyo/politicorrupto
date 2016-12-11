@@ -1,4 +1,3 @@
-
 # Initialize Firebase
 firebase.initializeApp({
     apiKey: "AIzaSyACFYYD9sdGg5Va_pmPi8MAPRSTMsPX1bM",
