@@ -1,0 +1,17 @@
+.bg-{
+	&facebook{
+		background-color: $facebook_color;
+	}
+	&google{
+		background-color: $google_plus_color;
+	}
+	&twitter{
+		background-color: $twitter_color;
+	}
+}
+
+.cl-{
+	&white{
+		color: white;
+	}
+}

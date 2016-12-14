@@ -3,46 +3,21 @@
   <head>
     <meta charset="UTF-8"/>
     <title>SeBuscaPolitiCorrupto</title>
-    <link rel="stylesheet" href="bower_components/lumx/dist/lumx.css?t=1481480413159"/>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
+    <link rel="stylesheet" href="bower_components/lumx/dist/lumx.css?t=1481748468631"/>
+    <link rel="stylesheet" href="css/style.css?t=1481748468631"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
     <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
-    <script src="bower_components/velocity/velocity.js?t=1481480413159"></script>
-    <script src="bower_components/moment/min/moment-with-locales.js?t=1481480413159"></script>
-    <script src="bower_components/lumx/dist/lumx.js?t=1481480413159"></script>
-    <script src="/js/angular_scripts.js?t=1481480413159"></script>
+    <script src="bower_components/velocity/velocity.js?t=1481748468631"></script>
+    <script src="bower_components/moment/min/moment-with-locales.js?t=1481748468631"></script>
+    <script src="bower_components/lumx/dist/lumx.js?t=1481748468631"></script>
+    <script src="/js/angular_scripts.js?t=1481748468631"></script>
   </head>
   <body ng-controller="main-Ctrl">
-    <div ng-controller="auth-Ctrl" class="box">
-      <form action="">
-        <label for="">Name</label>
-        <input type="text" ng-model="name"/>
-        <label for="">Surname</label>
-        <input type="text" ng-model="surname"/>
-      </form>
-      <button ng-click="signIn('facebook')">connect with facebook</button>
-      <button ng-click="signIn('google')">connect with google</button>
-      <button ng-click="signIn('twitter')">connect with twitter</button>
-      <p ng-if="user" ng-repeat=" (key, value) in user" ng-bind="value"></p><img ng-if="user" ng-src="{{user.photo}}"/>
-      <p></p>
-      <button ng-click="signOut()">Sign Out</button>
-    </div>
-    <div ng-controller="msg-Ctrl" class="box">
-      <ul>
-        <li ng-repeat="message in messages">
-          <!-- edit a message-->
-          <p ng-bind="message.text"></p>
-          <!-- delete a message-->
-          <button ng-click="messages.$remove(message)">Delete Message</button>
-        </li>
-      </ul>
-      <!-- push a new message onto the array-->
-      <form ng-submit="addMessage()">
-        <input ng-model="newMessageText"/>
-        <button type="submit">Add Message</button>
-      </form>
-    </div>
+    <header ui-view="header"></header>
+    <main ui-view="main"></main>
   </body>
 </html>

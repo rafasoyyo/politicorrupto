@@ -1,0 +1,60 @@
+
+.toolbar(style="box-shadow:0 1px 5px 0 grey")
+    .toolbar__left(class='mr++')
+        lx-button(lx-size='l', lx-color='black', lx-type='icon')
+            i.mdi.mdi-menu
+    span.toolbar__label.fs-title Se Busca PolitiCorrupto
+
+    .toolbar__right
+        div(ng-if="user")
+            lx-dropdown(lx-position="right" lx-width="150px")
+                lx-dropdown-toggle(style="cursor:pointer")
+                    .list-row
+                        .list-row__content
+                            span(ng-bind="user.name")
+                        .list-row__primary
+                            img.img-round(ng-src="{{user.photo}}" width="40" height="40" class="mh")
+                        .list-row__secondary(class="ph+")
+                            lx-icon(lx-id="menu-down" lx-size="m")
+                lx-dropdown-menu(class="mr++")
+                    ul
+                        li
+                            a.dropdown-link Perfil
+                        li.dropdown-divider
+                        li
+                            a.dropdown-link(ng-click="signOut()") Salir
+
+        div(ng-if="!user")
+            lx-button(ng-click="LxDialog.open('accessDialog')") Acceder
+
+            lx-dialog#accessDialog(lx-size="m")
+                lx-dialog-content(class="p+")
+                    //- .text-center(class="ph+")
+                    //-     h2 Access Dialog
+                    div(class="p")
+                        h3(class="mh++") Accede con
+                        form(class="mh+++" ng-submit="signIn('email')" novalidate)
+                            lx-text-field(lx-label='Usuario')
+                                input(type='text', ng-model='signin.email' required)
+                            lx-text-field(lx-label='Contraseña', lx-fixed-label='true')
+                                input(type='passsword', ng-model='signin.password' required)
+                            .text-center
+                                lx-button(lx-color="green" lx-size="l") Entrar
+                                //- button.bg-google.cl-white(class="btn btn--m btn--raised" lx-ripple="white")
+                                    span Entrar
+
+                        div(class="mv++")
+                        h3(class="mh++") O accede con
+                        div(flex-container="row" flex-column="12" class="p++")
+                            .text-center(flex-item="4")
+                                button.bg-facebook.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="LxDialog.open('accessDialog')") 
+                                    lx-icon.pr(lx-id="facebook-box")
+                                    span Facebook
+                            .text-center(flex-item="4")
+                                button.bg-google.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="signIn('google')") 
+                                    lx-icon.pr(lx-id="google-plus-box")
+                                    span Google
+                            .text-center(flex-item="4")
+                                button.bg-twitter.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="LxDialog.open('accessDialog')")
+                                    lx-icon.pr(lx-id="twitter-box")
+                                    span Twitter

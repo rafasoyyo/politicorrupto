@@ -1,0 +1,68 @@
+
+<div style="box-shadow:0 1px 5px 0 grey" class="toolbar">
+  <div class="toolbar__left mr++">
+    <lx-button lx-size="l" lx-color="black" lx-type="icon"><i class="mdi mdi-menu"></i></lx-button>
+  </div><span class="toolbar__label fs-title">Se Busca PolitiCorrupto</span>
+  <div class="toolbar__right">
+    <div ng-if="user">
+      <lx-dropdown lx-position="right" lx-width="150px">
+        <lx-dropdown-toggle style="cursor:pointer">
+          <div class="list-row">
+            <div class="list-row__content"><span ng-bind="user.name"></span></div>
+            <div class="list-row__primary"><img ng-src="{{user.photo}}" width="40" height="40" class="img-round mh"/></div>
+            <div class="list-row__secondary ph+">
+              <lx-icon lx-id="menu-down" lx-size="m"></lx-icon>
+            </div>
+          </div>
+        </lx-dropdown-toggle>
+        <lx-dropdown-menu class="mr++">
+          <ul>
+            <li><a class="dropdown-link">Perfil</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a ng-click="signOut()" class="dropdown-link">Salir</a></li>
+          </ul>
+        </lx-dropdown-menu>
+      </lx-dropdown>
+    </div>
+    <div ng-if="!user">
+      <lx-button ng-click="LxDialog.open('accessDialog')">Acceder</lx-button>
+      <lx-dialog id="accessDialog" lx-size="m">
+        <lx-dialog-content class="p+">
+          <div class="p">
+            <h3 class="mh++">Accede con</h3>
+            <form ng-submit="signIn('email')" novalidate="novalidate" class="mh+++">
+              <lx-text-field lx-label="Usuario">
+                <input type="text" ng-model="signin.email" required="required"/>
+              </lx-text-field>
+              <lx-text-field lx-label="Contraseña" lx-fixed-label="true">
+                <input type="passsword" ng-model="signin.password" required="required"/>
+              </lx-text-field>
+              <div class="text-center">
+                <lx-button lx-color="green" lx-size="l">Entrar</lx-button>
+              </div>
+            </form>
+            <div class="mv++"></div>
+            <h3 class="mh++">O accede con</h3>
+            <div flex-container="row" flex-column="12" class="p++">
+              <div flex-item="4" class="text-center">
+                <button lx-ripple="white" ng-click="LxDialog.open('accessDialog')" class="bg-facebook cl-white btn btn--s btn--raised"> 
+                  <lx-icon lx-id="facebook-box" class="pr"></lx-icon><span>Facebook</span>
+                </button>
+              </div>
+              <div flex-item="4" class="text-center">
+                <button lx-ripple="white" ng-click="signIn('google')" class="bg-google cl-white btn btn--s btn--raised"> 
+                  <lx-icon lx-id="google-plus-box" class="pr"></lx-icon><span>Google</span>
+                </button>
+              </div>
+              <div flex-item="4" class="text-center">
+                <button lx-ripple="white" ng-click="LxDialog.open('accessDialog')" class="bg-twitter cl-white btn btn--s btn--raised">
+                  <lx-icon lx-id="twitter-box" class="pr"></lx-icon><span>Twitter</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </lx-dialog-content>
+      </lx-dialog>
+    </div>
+  </div>
+</div>

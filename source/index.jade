@@ -5,13 +5,16 @@ html(ng-app='politicorrupto', ng-strict-di)
         meta(charset="UTF-8")
         title SeBuscaPolitiCorrupto
 
-        link(rel="stylesheet", href="bower_components/lumx/dist/lumx.css")
         link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700")
+        link(rel="stylesheet", href="bower_components/lumx/dist/lumx.css")
+        link(rel="stylesheet", href="css/style.css")
 
         //- Jquery CDN
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js")
         //- Angular CDN
         script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js")
+        //- AngularRouter CDN
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js")
         //- Firebase CDN
         script(src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js")
         //- AngularFire CDN
@@ -28,28 +31,30 @@ html(ng-app='politicorrupto', ng-strict-di)
         script(src="/js/angular_scripts.js")
 
     body(ng-controller='main-Ctrl')
-        .box(ng-controller='auth-Ctrl')
-            form(action='')
-                label(for='') Name
-                input(type='text', ng-model='name')
-                label(for='') Surname
-                input(type='text', ng-model='surname')
-            button(ng-click="signIn('facebook')") connect with facebook
-            button(ng-click="signIn('google')") connect with google
-            button(ng-click="signIn('twitter')") connect with twitter
-            p(ng-if='user', ng-repeat=' (key, value) in user', ng-bind='value')
-            img(ng-if='user', ng-src='{{user.photo}}')
-            p
-            button(ng-click='signOut()') Sign Out
+        header(ui-view="header")
+        main(ui-view="main")
+        //- .box(ng-controller='auth-Ctrl')
+        //-     form(action='')
+        //-         label(for='') Name
+        //-         input(type='text', ng-model='name')
+        //-         label(for='') Surname
+        //-         input(type='text', ng-model='surname')
+        //-     button(ng-click="signIn('facebook')") connect with facebook
+        //-     button(ng-click="signIn('google')") connect with google
+        //-     button(ng-click="signIn('twitter')") connect with twitter
+        //-     p(ng-if='user', ng-repeat=' (key, value) in user', ng-bind='value')
+        //-     img(ng-if='user', ng-src='{{user.photo}}')
+        //-     p
+        //-     button(ng-click='signOut()') Sign Out
 
-        .box(ng-controller='msg-Ctrl')
-            ul
-                li(ng-repeat='message in messages')
-                    // edit a message
-                    p(ng-bind='message.text')
-                    // delete a message
-                    button(ng-click='messages.$remove(message)') Delete Message
-            // push a new message onto the array
-            form(ng-submit='addMessage()')
-                input(ng-model='newMessageText')
-                button(type='submit') Add Message
+        //- .box(ng-controller='msg-Ctrl')
+        //-     ul
+        //-         li(ng-repeat='message in messages')
+        //-             // edit a message
+        //-             p(ng-bind='message.text')
+        //-             // delete a message
+        //-             button(ng-click='messages.$remove(message)') Delete Message
+        //-     // push a new message onto the array
+        //-     form(ng-submit='addMessage()')
+        //-         input(ng-model='newMessageText')
+        //-         button(type='submit') Add Message

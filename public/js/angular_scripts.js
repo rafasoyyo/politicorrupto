@@ -8,26 +8,95 @@ firebase.initializeApp({
   messagingSenderId: "105923145713"
 });
 
-ptcApp = angular.module('politicorrupto', ['lumx', 'firebase']);
+ptcApp = angular.module('politicorrupto', ['ui.router', 'firebase', 'lumx']);
 
-ptcApp.controller('main-Ctrl', [
-  '$scope', '$firebaseAuth', 'LxNotificationService', function($scope, $firebaseAuth, LxNotificationService) {
-    var auth;
-    $scope.$on('alert', function($event, options) {
-      console.log(options);
-      console.log(LxNotificationService);
-      LxNotificationService.success(options.text, true);
+ptcApp.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise("/");
+  $stateProvider.state('app', {
+    url: "",
+    abstract: true,
+    views: {
+      header: {
+        templateUrl: "templates/header.html",
+        controller: "app-Ctrl"
+      }
+    }
+  });
+  return $stateProvider.state('app.home', {
+    url: "/",
+    views: {
+      "main@": {
+        templateUrl: "templates/home.html",
+        controller: "home-Ctrl"
+      }
+    }
+  });
+}]);
+
+ptcApp.controller('app-Ctrl', ["$scope", "$firebaseAuth", "LxDialogService", function($scope, $firebaseAuth, LxDialogService) {
+  var auth;
+  auth = $firebaseAuth();
+  $scope.access = {};
+  $scope.LxDialog = LxDialogService;
+  auth.$onAuthStateChanged(function(user) {
+    if (user) {
+      $scope.$emit('alert', {
+        type: 'success',
+        text: 'signIn'
+      });
+      return $scope.user = {
+        name: user.displayName,
+        email: user.email,
+        uid: user.uid,
+        photo: user.photoURL
+      };
+    } else {
+      return $scope.user = false;
+    }
+  }, function(error) {
+    return console.log(error);
+  }, function(completed) {
+    return console.log(completed);
+  });
+  $scope.logIn = function() {
+    return auth.$createUserWithEmailAndPassword($scope.login.email, $scope.login.email)["catch"](function(error) {
+      return console.error('logIn failed:', error);
     });
-    auth = $firebaseAuth();
-    auth.$onAuthStateChanged((function(user) {
-      console.log('main-Ctrl', user);
-    }), (function(error) {
-      console.log('main-Ctrl', error);
-    }), function(completed) {
-      console.log('main-Ctrl', completed);
+  };
+  $scope.signIn = function(provider) {
+    if (provider === 'email') {
+      return auth.$signInWithEmailAndPassword($scope.signin.email, $scope.signin.password)["catch"](function(error) {
+        return console.error('signIn failed:', error);
+      });
+    } else {
+      return auth.$signInWithPopup(provider)["catch"](function(error) {
+        return console.error('signIn failed:', error);
+      });
+    }
+  };
+  return $scope.signOut = function() {
+    return auth.$signOut()["catch"](function(error) {
+      return console.error('signOut failed:', error);
     });
-  }
-]);
+  };
+}]);
+
+ptcApp.controller('main-Ctrl', ["$scope", "$firebaseAuth", "LxNotificationService", function($scope, $firebaseAuth, LxNotificationService) {
+  var auth;
+  $scope.$on('alert', function($event, options) {
+    console.log(options);
+    console.log(LxNotificationService);
+    LxNotificationService.success(options.text, true);
+  });
+  auth = $firebaseAuth();
+  auth.$onAuthStateChanged((function(user) {
+    console.log('main-Ctrl', user);
+  }), (function(error) {
+    console.log('main-Ctrl', error);
+  }), function(completed) {
+    console.log('main-Ctrl', completed);
+  });
+}]);
 
 ptcApp.controller('auth-Ctrl', [
   '$scope', '$firebaseAuth', function($scope, $firebaseAuth) {
@@ -86,3 +155,8 @@ ptcApp.controller('msg-Ctrl', [
     };
   }
 ]);
+
+ptcApp.controller('home-Ctrl', ["$scope", "LxDatePickerService", function($scope, LxDatePickerService) {
+  $scope.LxDatePicker = LxDatePickerService;
+  return console.log($scope);
+}]);

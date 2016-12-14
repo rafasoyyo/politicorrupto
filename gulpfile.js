@@ -77,8 +77,16 @@ gulp.task('coffee', function() {
 
 
 // define tasks here
-gulp.task('less', function(){
-
+gulp.task('scss', function(){
+    gulp.src( source + 'scss/style.scss')
+        .pipe(plumber({errorHandler: jade_error}))
+        .pipe(sass())
+        .pipe(gulp.dest(public + 'css'))
+        .pipe(livereload())
+        .pipe(notify({
+            onLast: true,
+            message: 'angular_coffee done!'
+        }));
 });
 
 
@@ -100,8 +108,9 @@ var jade_error = function(error){
  * @method jade_login
  */
 gulp.task('jade', function() {
-    gulp.src([ source + 'index.jade', source + 'templates/**/*.jade'])
+    gulp.src([ source + 'index.jade', source + 'templates/**/*.jade'], {base: source})
         .pipe(change( public + 'templates/' , {extension: '.html'}))
+        .pipe(plumber({errorHandler: jade_error}))
         .pipe(gulpJade({
             jade: jade,
             pretty: true
@@ -142,9 +151,10 @@ gulp.task('server', function() {
 gulp.task('watch', function() {
     livereload.listen();
 
-    gulp.watch( source + 'coffee/**/*.coffee',  ['coffee'] );
-    gulp.watch( source + 'templates/**/*.jade',  ['jade'] );
-    gulp.watch( source + 'index.jade',          ['jade'] );
+    gulp.watch( source + 'scss/**/*.scss',      ['scss']    );
+    gulp.watch( source + 'coffee/**/*.coffee',  ['coffee']  );
+    gulp.watch( source + 'templates/**/*.jade', ['jade']    );
+    gulp.watch( source + 'index.jade',          ['jade']    );
 });
 
 /**

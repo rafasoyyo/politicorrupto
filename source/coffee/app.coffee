@@ -8,4 +8,31 @@ firebase.initializeApp({
 })
 
 # Initialize Angular
-ptcApp = angular.module('politicorrupto', ['lumx', 'firebase'])
+ptcApp = angular.module('politicorrupto', [
+    'ui.router',
+    'firebase',
+    'lumx'
+    ])
+
+ptcApp.config(($stateProvider, $urlRouterProvider)->
+
+    $urlRouterProvider.otherwise("/")
+
+    $stateProvider.state('app', {
+        url: "",
+        abstract: true,
+        views:
+            header:
+                templateUrl: "templates/header.html"
+                controller: "app-Ctrl"
+    })
+
+    $stateProvider.state('app.home', {
+        url: "/",
+        views:
+            "main@" :
+                templateUrl: "templates/home.html"
+                controller: "home-Ctrl"
+    })
+)
+
