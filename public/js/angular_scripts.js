@@ -10,6 +10,11 @@ firebase.initializeApp({
 
 ptcApp = angular.module('politicorrupto', ['ui.router', 'firebase', 'lumx']);
 
+ptcApp.constant('config', {
+  mediaURL: '/media/',
+  userlogo: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png'
+});
+
 ptcApp.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise("/");
   $stateProvider.state('app', {
@@ -36,30 +41,17 @@ ptcApp.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, 
 ptcApp.controller('app-Ctrl', ["$scope", "$firebaseAuth", "LxDialogService", function($scope, $firebaseAuth, LxDialogService) {
   var auth;
   auth = $firebaseAuth();
-  $scope.access = {};
+  $scope.login = {};
+  $scope.signin = {};
   $scope.LxDialog = LxDialogService;
-  auth.$onAuthStateChanged(function(user) {
-    if (user) {
-      $scope.$emit('alert', {
-        type: 'success',
-        text: 'signIn'
-      });
-      return $scope.user = {
-        name: user.displayName,
-        email: user.email,
-        uid: user.uid,
-        photo: user.photoURL
-      };
-    } else {
-      return $scope.user = false;
-    }
-  }, function(error) {
-    return console.log(error);
-  }, function(completed) {
-    return console.log(completed);
-  });
   $scope.logIn = function() {
-    return auth.$createUserWithEmailAndPassword($scope.login.email, $scope.login.email)["catch"](function(error) {
+    return auth.$createUserWithEmailAndPassword($scope.login.email, $scope.login.password).then(function(res) {
+      return res.updateProfile({
+        displayName: $scope.login.name
+      })["catch"](function(error) {
+        return console.error('logIn failed:', error);
+      });
+    })["catch"](function(error) {
       return console.error('logIn failed:', error);
     });
   };
@@ -81,20 +73,25 @@ ptcApp.controller('app-Ctrl', ["$scope", "$firebaseAuth", "LxDialogService", fun
   };
 }]);
 
-ptcApp.controller('main-Ctrl', ["$scope", "$firebaseAuth", "LxNotificationService", function($scope, $firebaseAuth, LxNotificationService) {
-  var auth;
+ptcApp.controller('main-Ctrl', ["$scope", "config", "$firebaseAuth", "LxNotificationService", function($scope, config, $firebaseAuth, LxNotificationService) {
+  $scope.config = config;
   $scope.$on('alert', function($event, options) {
-    console.log(options);
-    console.log(LxNotificationService);
-    LxNotificationService.success(options.text, true);
+    return LxNotificationService.success(options.text, true);
   });
-  auth = $firebaseAuth();
-  auth.$onAuthStateChanged((function(user) {
-    console.log('main-Ctrl', user);
-  }), (function(error) {
-    console.log('main-Ctrl', error);
-  }), function(completed) {
-    console.log('main-Ctrl', completed);
+  return $firebaseAuth().$onAuthStateChanged(function(user) {
+    if (user) {
+      $scope.$emit('alert', {
+        type: 'success',
+        text: 'signIn'
+      });
+      return $scope.user = user;
+    } else {
+      return $scope.user = false;
+    }
+  }, function(error) {
+    return console.log(error);
+  }, function(completed) {
+    return console.log(completed);
   });
 }]);
 
@@ -156,7 +153,31 @@ ptcApp.controller('msg-Ctrl', [
   }
 ]);
 
-ptcApp.controller('home-Ctrl', ["$scope", "LxDatePickerService", function($scope, LxDatePickerService) {
+ptcApp.controller('home-Ctrl', ["$scope", "$timeout", "LxDatePickerService", function($scope, $timeout, LxDatePickerService) {
   $scope.LxDatePicker = LxDatePickerService;
-  return console.log($scope);
+  console.log($scope);
+  return $timeout(function() {
+    var map;
+    return map = new google.maps.Map(document.getElementById('map'), {
+      center: {
+        lat: 40.416775,
+        lng: -3.703790
+      },
+      zoom: 6
+    });
+  }, 1);
 }]);
+
+ptcApp.factory('$User', function() {
+  var user;
+  user = {};
+  this.setData = function(data) {
+    return user = data;
+  };
+  return this.getData = function(item) {
+    if (!item) {
+      return user;
+    }
+    return user[item];
+  };
+});

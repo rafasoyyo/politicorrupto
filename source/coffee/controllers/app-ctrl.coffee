@@ -2,31 +2,18 @@ ptcApp.controller('app-Ctrl', ($scope, $firebaseAuth, LxDialogService)->
 
     auth = $firebaseAuth()
 
-    $scope.access = {}
+    $scope.login = {}
+    
+    $scope.signin = {}
 
     $scope.LxDialog = LxDialogService
 
-    auth.$onAuthStateChanged(
-        (user) ->
-            # console.log user
-            if user
-                $scope.$emit 'alert', { type: 'success', text: 'signIn' }
-                $scope.user =
-                    name: user.displayName
-                    email: user.email
-                    uid: user.uid
-                    photo: user.photoURL
-            else
-                $scope.user = false
-        ,
-        (error) -> console.log error
-        ,
-        (completed) -> console.log completed
-    )
-
-
     $scope.logIn = ->
-        auth.$createUserWithEmailAndPassword($scope.login.email, $scope.login.email)
+        auth.$createUserWithEmailAndPassword($scope.login.email, $scope.login.password)
+            .then (res)->
+                res.updateProfile({ displayName: $scope.login.name })
+                    .catch (error)->
+                        console.error 'logIn failed:', error
             .catch (error)->
                 console.error 'logIn failed:', error
 
@@ -43,7 +30,7 @@ ptcApp.controller('app-Ctrl', ($scope, $firebaseAuth, LxDialogService)->
 
     $scope.signOut = ->
         auth.$signOut()
-            .catch (error)-> 
+            .catch (error)->
                 console.error 'signOut failed:', error
-                
+
 )

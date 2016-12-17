@@ -11,9 +11,9 @@
                 lx-dropdown-toggle(style="cursor:pointer")
                     .list-row
                         .list-row__content
-                            span(ng-bind="user.name")
+                            span(ng-bind="user.displayName")
                         .list-row__primary
-                            img.img-round(ng-src="{{user.photo}}" width="40" height="40" class="mh")
+                            img.img-round(ng-src="{{user.photoURL || config.userlogo}}" width="40" height="40" class="mh")
                         .list-row__secondary(class="ph+")
                             lx-icon(lx-id="menu-down" lx-size="m")
                 lx-dropdown-menu(class="mr++")
@@ -27,34 +27,48 @@
         div(ng-if="!user")
             lx-button(ng-click="LxDialog.open('accessDialog')") Acceder
 
-            lx-dialog#accessDialog(lx-size="m")
+            lx-dialog#accessDialog(lx-size="l")
                 lx-dialog-content(class="p+")
                     //- .text-center(class="ph+")
                     //-     h2 Access Dialog
-                    div(class="p")
-                        h3(class="mh++") Accede con
-                        form(class="mh+++" ng-submit="signIn('email')" novalidate)
-                            lx-text-field(lx-label='Usuario')
-                                input(type='text', ng-model='signin.email' required)
-                            lx-text-field(lx-label='Contraseña', lx-fixed-label='true')
-                                input(type='passsword', ng-model='signin.password' required)
-                            .text-center
-                                lx-button(lx-color="green" lx-size="l") Entrar
-                                //- button.bg-google.cl-white(class="btn btn--m btn--raised" lx-ripple="white")
-                                    span Entrar
+                    div(class="p" flex-container="row" flex-column="12")
+                        div(flex-item="6")
+                            h3(class="mh++") Accede con
+                                form(class="mh+++" ng-submit="signIn('email')" novalidate)
+                                    lx-text-field(lx-label='Usuario')
+                                        input(type='text', ng-model='signin.email' required)
+                                    lx-text-field(lx-label='Contraseña')
+                                        input(type='password', ng-model='signin.password' required)
+                                    .text-center
+                                        lx-button(lx-color="green" lx-size="l") Entrar
+                                        //- button.bg-google.cl-white(class="btn btn--m btn--raised" lx-ripple="white")
+                                            span Entrar
+                        div(flex-item="6")
+                            h3(class="mh++") Registrate
+                                form(class="mh+++" ng-submit="logIn('email')" novalidate)
+                                    lx-text-field(lx-label='Usuario')
+                                        input(type='text', ng-model='login.name' required)
+                                    lx-text-field(lx-label='Email')
+                                        input(type='text', ng-model='login.email' required)
+                                    lx-text-field(lx-label='Contraseña')
+                                        input(type='password', ng-model='login.password' required)
+                                    .text-center
+                                        lx-button(lx-color="green" lx-size="l") Entrar
+                                        //- button.bg-google.cl-white(class="btn btn--m btn--raised" lx-ripple="white")
+                                            span Entrar
 
-                        div(class="mv++")
-                        h3(class="mh++") O accede con
-                        div(flex-container="row" flex-column="12" class="p++")
-                            .text-center(flex-item="4")
-                                button.bg-facebook.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="LxDialog.open('accessDialog')") 
-                                    lx-icon.pr(lx-id="facebook-box")
-                                    span Facebook
-                            .text-center(flex-item="4")
-                                button.bg-google.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="signIn('google')") 
-                                    lx-icon.pr(lx-id="google-plus-box")
-                                    span Google
-                            .text-center(flex-item="4")
-                                button.bg-twitter.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="LxDialog.open('accessDialog')")
-                                    lx-icon.pr(lx-id="twitter-box")
-                                    span Twitter
+                    div(class="mv++")
+                    h3(class="mh++") O accede con
+                    div(flex-container="row" flex-column="12" class="p++")
+                        .text-center(flex-item="4")
+                            button.bg-facebook.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="LxDialog.open('accessDialog')") 
+                                lx-icon.pr(lx-id="facebook-box")
+                                span Facebook
+                        .text-center(flex-item="4")
+                            button.bg-google.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="signIn('google')") 
+                                lx-icon.pr(lx-id="google-plus-box")
+                                span Google
+                        .text-center(flex-item="4")
+                            button.bg-twitter.cl-white(class="btn btn--s btn--raised" lx-ripple="white" ng-click="LxDialog.open('accessDialog')")
+                                lx-icon.pr(lx-id="twitter-box")
+                                span Twitter

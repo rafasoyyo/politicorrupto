@@ -1,21 +1,23 @@
-ptcApp.controller('main-Ctrl', ($scope, $firebaseAuth, LxNotificationService) ->
+ptcApp.controller('main-Ctrl', ($scope, config, $firebaseAuth, LxNotificationService) ->
     
+    $scope.config = config
+
     $scope.$on 'alert', ($event, options) ->
-        console.log options
-        console.log LxNotificationService
         LxNotificationService.success options.text, true
-        return
-    auth = $firebaseAuth()
-    auth.$onAuthStateChanged ((user) ->
-        console.log 'main-Ctrl', user
-        return
-    ), ((error) ->
-        console.log 'main-Ctrl', error
-        return
-    ), (completed) ->
-        console.log 'main-Ctrl', completed
-        return
-    return
+
+    $firebaseAuth().$onAuthStateChanged(
+        (user) ->
+            if user
+                $scope.$emit 'alert', { type: 'success', text: 'signIn' }
+                $scope.user = user
+            else
+                $scope.user = false
+        ,
+        (error) -> console.log error
+        ,
+        (completed) -> console.log completed
+    )
+
 )
 
 

@@ -3,22 +3,24 @@ html(ng-app='politicorrupto', ng-strict-di)
 
     head
         meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
         title SeBuscaPolitiCorrupto
 
-        link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700")
+        link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700")
         link(rel="stylesheet", href="bower_components/lumx/dist/lumx.css")
         link(rel="stylesheet", href="css/style.css")
+        link(rel="stylesheet", href="css/angular_modules.css")
 
         //- Jquery CDN
-        script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js")
-        //- Angular CDN
-        script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js")
-        //- AngularRouter CDN
-        script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js")
+        script(src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js")
         //- Firebase CDN
-        script(src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js")
-        //- AngularFire CDN
-        script(src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js")
+        script(src="//www.gstatic.com/firebasejs/3.6.0/firebase.js")
+        //- Angular CDN
+        script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js")
+        //- Google Maps 
+        script(src="//maps.googleapis.com/maps/api/js?key=AIzaSyAa-IPpRVJHN1jFHQp69GPg_Lgjav20LfE" async defer)
+        //- Angular Modules
+        script(src="js/angular_modules.js")
 
         //- Velocity
         script(src="bower_components/velocity/velocity.js")
@@ -27,34 +29,21 @@ html(ng-app='politicorrupto', ng-strict-di)
         //- lumx
         script(src="bower_components/lumx/dist/lumx.js")
 
-        //- Scripts
-        script(src="/js/angular_scripts.js")
+        //- Custom Scripts
+        script(src="js/angular_scripts.js")
 
     body(ng-controller='main-Ctrl')
         header(ui-view="header")
         main(ui-view="main")
-        //- .box(ng-controller='auth-Ctrl')
-        //-     form(action='')
-        //-         label(for='') Name
-        //-         input(type='text', ng-model='name')
-        //-         label(for='') Surname
-        //-         input(type='text', ng-model='surname')
-        //-     button(ng-click="signIn('facebook')") connect with facebook
-        //-     button(ng-click="signIn('google')") connect with google
-        //-     button(ng-click="signIn('twitter')") connect with twitter
-        //-     p(ng-if='user', ng-repeat=' (key, value) in user', ng-bind='value')
-        //-     img(ng-if='user', ng-src='{{user.photo}}')
-        //-     p
-        //-     button(ng-click='signOut()') Sign Out
+    
+    script.
+        console.log((window.location.href).indexOf('localhost'))
+        if( (window.location.href).indexOf('localhost') === -1 ){
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-        //- .box(ng-controller='msg-Ctrl')
-        //-     ul
-        //-         li(ng-repeat='message in messages')
-        //-             // edit a message
-        //-             p(ng-bind='message.text')
-        //-             // delete a message
-        //-             button(ng-click='messages.$remove(message)') Delete Message
-        //-     // push a new message onto the array
-        //-     form(ng-submit='addMessage()')
-        //-         input(ng-model='newMessageText')
-        //-         button(type='submit') Add Message
+            ga('create', 'UA-89164401-1', 'auto');
+            ga('send', 'pageview');
+        }

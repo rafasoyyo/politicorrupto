@@ -19,6 +19,7 @@ var gulp   = require('gulp'),
     coffee = require('gulp-coffee'),
     clint  = require('gulp-coffeelint'),
     concat = require('gulp-concat'),
+    fs     = require('fs'),
     gulpJade   = require('gulp-jade'),
     // gutil   = require('gulp-util'),
     jade   = require('jade'),
@@ -32,14 +33,35 @@ var gulp   = require('gulp'),
     uglify = require('gulp-uglify'),
     watch  = require('gulp-watch');
 
+
 /**
  * List of routes
  * @memberOf GULP
  * @type {String}
  */
 var source = './source/',
-    public = './public/';
+    public = './public/',
+    bower  = './public/bower_components/';
 
+/**
+ * Check if file really exist before execute GULP
+ * @param  {Array} list List of file paths
+ * @return {Boolean}      File exist or not
+ */
+var check = function(list){
+    var correct=true;
+    for(var i=0,l=list.length; i<l; i++){
+        try{
+            fs.statSync(list[i]);
+        }
+        catch(error){
+            console.log(list[i] + ' file does not exist');
+            correct=false;
+            break;
+        }
+    }
+    return correct;
+}
 
 /**
  * ERROR HANDLER FOR COFFEE TASKS
@@ -126,6 +148,52 @@ gulp.task('jade', function() {
 
 
 /**
+ * Compile minified and concatenate amgular modules
+ * @memberOf GULP
+ * @method modules
+ */
+gulp.task('modules', function() {    
+
+    var js_src = [
+        bower + 'angular-sanitize/angular-sanitize.min.js',
+
+        bower + 'angular-ui-router/release/angular-ui-router.min.js',
+        bower + 'angularfire/dist/angularfire.min.js',
+        
+        bower + 'ng-file-upload/ng-file-upload-all.min.js',
+        bower + 'ng-img-crop/compile/minified/ng-img-crop.js'
+
+    ];
+
+    if(check(js_src)){
+        gulp.src(js_src)
+            .pipe(concat('angular_modules.js'))
+            .pipe(gulp.dest( public + 'js/'))
+            .pipe(livereload())
+            .pipe(notify({
+                onLast: true,
+                message: 'angular JS done!'
+            }));
+    }
+
+
+    var css_src = [
+        bower + 'ng-img-crop/compile/minified/ng-img-crop.css'
+    ];
+
+    if(check(css_src)){
+        gulp.src(css_src)
+            .pipe(concat('angular_modules.css'))
+            .pipe(gulp.dest( public + 'css/'))
+            .pipe(livereload())
+            .pipe(notify({
+                onLast: true,
+                message: 'angular CSS done!'
+            }));
+    }
+});
+
+/**
  * Run server
  * @memberOf GULP
  * @method server
@@ -156,6 +224,13 @@ gulp.task('watch', function() {
     gulp.watch( source + 'templates/**/*.jade', ['jade']    );
     gulp.watch( source + 'index.jade',          ['jade']    );
 });
+
+/**
+ * DEFAULT TASKS + SERVER
+ * @memberOf GULP
+ * @method Default
+ */
+gulp.task('withserver', ['watch', 'server'] );
 
 /**
  * DEFAULT TASKS

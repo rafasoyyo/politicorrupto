@@ -14,6 +14,13 @@ ptcApp = angular.module('politicorrupto', [
     'lumx'
     ])
 
+
+ptcApp.constant('config', {
+    mediaURL: '/media/'
+    userlogo: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png'
+})
+
+
 ptcApp.config(($stateProvider, $urlRouterProvider)->
 
     $urlRouterProvider.otherwise("/")
